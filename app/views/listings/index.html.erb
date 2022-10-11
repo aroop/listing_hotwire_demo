@@ -1,0 +1,47 @@
+<div class="w-full" id="listings_index">
+  <% if notice.present? %>
+    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
+  <% end %>
+
+  <div class="flex justify-between items-center">
+    <h1 class="font-bold text-4xl">Listings</h1>
+    <%= link_to 'New listing', new_listing_path, class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium" %>
+  </div>
+
+  <div class="my-4 relative">
+    <%= form_with(url: listings_path, method: :get, class: "space-y-2 sm:flex sm:space-x-2 sm:space-y-0 items-center justify-center") do |f| %>
+      <div>
+        <%= f.search_field :city, placeholder: 'City...',
+                           value: params[:city], class: "mb-0 text-base bg-gray-100 text-gray-700" %>
+      </div>
+      <div>
+        <%= f.select :bedrooms, (1..6).to_a,
+                     { include_blank: "Any Bedrooms", selected: params[:bedrooms] }, { class: "mb-0 text-base bg-gray-100 text-gray-700" } %>
+      </div>
+      <div>
+        <%= f.select :bathrooms, (1..4).to_a,
+                     { include_blank: "Any Bathrooms", selected: params[:bathrooms] }, { class: "mb-0 text-base bg-gray-100 text-gray-700" } %>
+      </div>
+      <div>
+        <%= f.select :state, US_STATES.invert.sort,
+                     { include_blank: "Any State", selected: params[:state] }, { class: "mb-0 text-base bg-gray-100 text-gray-700" } %>
+      </div>
+      <div>
+        <%= f.select :sort,
+                     [["By State", "by_state"], ["By Bedrooms", "by_bedrooms"], ["By Price", "by_price"], ["By Bathrooms", "by_bathrooms"]],
+                     { include_blank: "Sort By", selected: params[:sort] }, { class: "mb-0 text-base bg-gray-100 text-gray-700" } %>
+      </div>
+      <div>
+        <%= f.submit "Search", class: "ml-6 p-2 tracking-wider bg-gray-200 text-gray-800 border border-gray-400 active:bg-gray-700 hover:bg-gray-400 focus:border-gray-700 focus:ring-2 focus:ring-offset-2 focus:ring-gray-300" %>
+      </div>
+    <% end %>
+  </div>
+
+
+  <div id="listings" role="list" class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 my-6">
+    <%= render @listings %>
+  </div>
+
+  <%== pagy_nav(@pagy) %>
+
+</div>
