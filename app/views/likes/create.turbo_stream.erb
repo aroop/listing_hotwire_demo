@@ -1,0 +1,19 @@
+<%= turbo_stream.replace @listing, @listing %>
+
+<!-- This is the same as -->
+<%#= turbo_stream.replace @listing,
+                         partial: "listing/listing", locals: { listing: @listing } %>
+
+<!-- This is the same as -->
+<!--<turbo-stream action="replace" target="<%#= dom_id @listing %>">-->
+<!--  <template>-->
+    <%#= render partial: "listing/listing", locals: { listing: @listing } %>
+<!--  </template>-->
+<!--</turbo-stream>-->
+
+
+
+<!--Update likes_count-->
+<%= turbo_stream.update "likes_count" do %>
+  <%= Like.count %>
+<% end %>

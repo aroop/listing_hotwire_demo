@@ -5,16 +5,22 @@ class LikesController < ApplicationController
     return if existing_like
 
     @like = Like.create!(user: current_user, listing: @listing)
-    # redirect_to request.referrer
-    render @listing
+
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_to request.referrer } # fallback for non-turbo clients i.e., when JS is disabled
+    end
   end
 
   def destroy
     return unless (like = existing_like)
 
     like.destroy!
-    # redirect_to request.referrer
-    render @listing
+
+    respond_to do |format|
+      format.turbo_stream { render :create }
+      format.html { redirect_to request.referrer } # fallback for non-turbo clients i.e., when JS is disabled
+    end
   end
 
   private
