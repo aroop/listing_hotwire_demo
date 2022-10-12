@@ -5,14 +5,16 @@ class LikesController < ApplicationController
     return if existing_like
 
     @like = Like.create!(user: current_user, listing: @listing)
-    redirect_to request.referrer
+    # redirect_to request.referrer
+    render @listing
   end
 
   def destroy
     return unless (like = existing_like)
 
     like.destroy!
-    redirect_to request.referrer
+    # redirect_to request.referrer
+    render @listing
   end
 
   private
