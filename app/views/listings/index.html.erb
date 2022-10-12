@@ -9,7 +9,8 @@
   </div>
 
   <div class="my-4 relative">
-    <%= form_with(url: listings_path, method: :get, class: "space-y-2 sm:flex sm:space-x-2 sm:space-y-0 items-center justify-center") do |f| %>
+    <%= form_with(url: listings_path, method: :get, class: "space-y-2 sm:flex sm:space-x-2 sm:space-y-0 items-center justify-center",
+                  data: { turbo_frame: "results", turbo_action: "advance" }) do |f| %>
       <div>
         <%= f.search_field :city, placeholder: 'City...',
                            value: params[:city], class: "mb-0 text-base bg-gray-100 text-gray-700" %>
@@ -38,10 +39,13 @@
   </div>
 
 
-  <div id="listings" role="list" class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 my-6">
-    <%= render @listings %>
-  </div>
+  <%= turbo_frame_tag "results", data: { turbo_action: "advance" } do %>
+    <div id="listings" role="list" class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 my-6">
+      <%= render @listings %>
+    </div>
 
-  <%== pagy_nav(@pagy) %>
+    <%== pagy_nav(@pagy) %>
+  <% end %>
+
 
 </div>
